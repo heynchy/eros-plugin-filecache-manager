@@ -1,9 +1,9 @@
 # eros-plugin-filecache-manager
 基于Eros框架下的Android端文件的查看，下载，预览基本功能以及本地缓存大小的获取，清除功能的基本实现
 
-## 文件操作
- 1.	Module名称： FileModule
- 2.	相关方法：
+### 文件操作
+  #### 1.	Module名称： FileModule
+  #### 2.	相关方法：
    2.1	文件下载
         方法名称：downloadFile (String params,  
                                JSCallback success, 
