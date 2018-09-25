@@ -63,3 +63,27 @@
     public void clearCaches(JSCallback callback)
 ```
 
+### JS 调用方式----举例——清除缓存的使用
+```java
+<template>
+  <div>
+    <text onclick="click">testMyModule</text>
+  </div>
+</template>
+
+<script>
+  module.exports = {
+    methods: {
+      click: function() {
+        weex.requireModule('CacheModule').clearCaches(params => {
+           if (params){
+               //  清除成功
+           } else {
+              //  清除失败
+           }
+        });
+      }
+    }
+  }
+</script>
+```
