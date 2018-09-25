@@ -6,15 +6,18 @@
   #### 2.	相关方法：
    2.1	文件下载
         方法名称：
-        ```groovy
-        downloadFile (String params,  
-                               JSCallback success, 
-                               JSCallBack failure, 
-                               JSCallBack progress)
-        参   数： params:  必须传递（Json 格式），包含url,  fileId和 fileName
-                 success: 下载成功的回调
-                 failure: 下载失败的回调
-                 progress:下载进度的回调
+        ```java
+         /**
+     * 下载文件的方法，带有进度的
+     *
+     * @param params   相关参数包含url, fileId, fileName
+     * @param success  下载成功的回调
+     * @param failure  下载失败的回调
+     * @param progress 下载进度的回调
+     */
+    @JSMethod(uiThread = true)
+    public void downloadFile(String params, final JSCallback success, final JSCallback failure,
+                             final JSCallback progress)    
        ```
 
    2.2 判断文件是否存在（是否已下载）
