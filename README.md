@@ -6,7 +6,8 @@
   #### 2.	相关方法：
    2.1	文件下载
         方法名称：
-        ```java
+```java
+        
          /**
      * 下载文件的方法，带有进度的
      *
@@ -18,7 +19,7 @@
     @JSMethod(uiThread = true)
     public void downloadFile(String params, final JSCallback success, final JSCallback failure,
                              final JSCallback progress)    
-       ```
+```
 
    2.2 判断文件是否存在（是否已下载）
        方法名称：isFileExist ( String params, JSCallback resultCallback)
