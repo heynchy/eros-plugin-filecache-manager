@@ -2,11 +2,11 @@
 基于Eros框架下的Android端文件的查看，下载，预览基本功能以及本地缓存大小的获取，清除功能的基本实现
 ## Usage
 ###  Add dependency
-
 ```groovy
-dependencies {
-    compile 'com.github.heynchy:SwipeMenuAndPullToRefresh:v0.1.9'
-}
+	dependencies {
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.0.2'
+	}
+
 ```
 
 ### 文件操作Module
