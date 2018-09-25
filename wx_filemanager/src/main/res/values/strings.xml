@@ -1,0 +1,7 @@
+<resources>
+    <string name="umeng_socialize_female">女</string>
+    <string name="umeng_socialize_male">男</string>
+    <string name="no_find_app">没有找到打开该类型文件的应用</string>
+    <string name="file_not_exist">该文件不存在</string>
+    <string name="default_size">0.0MB</string>
+</resources>
