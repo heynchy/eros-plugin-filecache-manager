@@ -5,7 +5,9 @@
   #### 1.	Module名称： FileModule
   #### 2.	相关方法：
    2.1	文件下载
-        方法名称：downloadFile (String params,  
+        方法名称：
+        ```groovy
+        downloadFile (String params,  
                                JSCallback success, 
                                JSCallBack failure, 
                                JSCallBack progress)
@@ -13,6 +15,7 @@
                  success: 下载成功的回调
                  failure: 下载失败的回调
                  progress:下载进度的回调
+       ```
 
    2.2 判断文件是否存在（是否已下载）
        方法名称：isFileExist ( String params, JSCallback resultCallback)
