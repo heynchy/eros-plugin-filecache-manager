@@ -2,7 +2,10 @@ package com.heyn.erosplugin.wx_filemanger.module;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.alibaba.weex.plugin.annotation.WeexModule;
 import com.google.gson.Gson;
@@ -152,6 +155,23 @@ public class FileModule extends WXModule {
         } else {
             PermissionActionActivity.start(mWXSDKInstance.getContext(), ACTION_TWO, filePath,
                     null);
+        }
+    }
+
+    /**
+     * 跳转至应用市场的评价界面
+     */
+    @JSMethod(uiThread = true)
+    public void marketComment() {
+        String appId = mWXSDKInstance.getContext().getPackageName();
+        try {
+            Uri uri = Uri.parse("market://details?id=" + appId);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mWXSDKInstance.getContext().startActivity(intent);
+        } catch (Exception e) {
+            ToastUtil.getInstance().showToast("您的手机没有安装Android应用市场");
+            e.printStackTrace();
         }
     }
 }
