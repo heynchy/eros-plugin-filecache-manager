@@ -4,15 +4,15 @@
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.0.2'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.0.3'
 	}
 
 ```
 
 ### 文件操作Module
-  #### 1.	Module名称： FileModule
-  #### 2.	相关方法：
-   2.1	文件下载
+#### 1.	Module名称： FileModule
+#### 2.	相关方法：
+    2.1	文件下载
 ```java
         
    /**
@@ -25,8 +25,8 @@
      */
     @JSMethod(uiThread = true)
     public void downloadFile(String params, final JSCallback success, final JSCallback failure, final JSCallback progress)    
-```
-   2.2 判断文件是否存在（是否已下载）
+``` 
+    2.2 判断文件是否存在（是否已下载）
 ```java
    /**
      * 判断文件是否存在
@@ -37,7 +37,7 @@
     @JSMethod(uiThread = true)
     public void isFileExist(String params, JSCallback resultCallback)
 ```
-   2.3	预览文件（查看文件）
+     2.3 预览文件（查看文件）
 ```java
      /**
      * 预览文件
@@ -46,6 +46,14 @@
      */
     @JSMethod(uiThread = true)
     public void previewFile(String params)
+```
+    2.4 打开应用市场的评分页（应用详情页）
+```java
+    /**
+     * 跳转至应用市场的评价界面
+     */
+    @JSMethod(uiThread = true)
+    public void marketComment()
 ```
 ### 缓存数据操作Module
 #### 1.	Module 名称： CacheModule
