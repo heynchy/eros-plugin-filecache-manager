@@ -165,10 +165,21 @@ public class FileModule extends WXModule {
     public void marketComment() {
         String appId = mWXSDKInstance.getContext().getPackageName();
         try {
-            Uri uri = Uri.parse("market://details?id=" + appId);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mWXSDKInstance.getContext().startActivity(intent);
+            if (android.os.Build.MANUFACTURER.equals("samsung")) {
+                // 如果当前手机是三星手机
+                Uri uri = Uri.parse("http://www.samsungapps.com/appquery/appDetail.as?appId=" + appId);
+                Intent goToMarket = new Intent();
+                goToMarket.setClassName("com.sec.android.app.samsungapps",
+                        "com.sec.android.app.samsungapps.Main");
+                goToMarket.setData(uri);
+                mWXSDKInstance.getContext().startActivity(goToMarket);
+            } else {
+                // 如果当前是其他类型的手机
+                Uri uri = Uri.parse("market://details?id=" + appId);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mWXSDKInstance.getContext().startActivity(intent);
+            }
         } catch (Exception e) {
             ToastUtil.getInstance().showToast("您的手机没有安装Android应用市场");
             e.printStackTrace();
