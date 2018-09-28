@@ -1,10 +1,13 @@
 # eros-plugin-filecache-manager
-基于Eros框架下的Android端文件的查看，下载，预览基本功能以及本地缓存大小的获取，清除功能的基本实现
+基于Eros框架下的相关功能（weex 与 Android 的交互）：
+ 1. Android端文件的查看，下载，预览基本功能
+ 2. 本地缓存大小的获取，清除功能
+ 3. 跳转至应用市场评分页（支持三星市场）
 ## Usage
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.0.3'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.0.4'
 	}
 
 ```
