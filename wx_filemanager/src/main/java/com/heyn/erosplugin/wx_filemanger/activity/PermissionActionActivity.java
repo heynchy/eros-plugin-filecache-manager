@@ -119,16 +119,17 @@ public class PermissionActionActivity extends Activity implements IWXRenderListe
                                 startActivity(FileUtil.openFile(mParamas));
                             } catch (ActivityNotFoundException e) {
                                 ToastUtil.getInstance().showToast(getResources()
-                                    .getString(R.string.no_find_app));
+                                        .getString(R.string.no_find_app));
                             }
                         } else {
                             ToastUtil.getInstance().showToast(getResources()
-                                .getString(R.string.file_not_exist));
+                                    .getString(R.string.file_not_exist));
                         }
                         break;
                     case ACTION_THREE: // 清除缓存的操作（仅有callback）
                         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                             FileUtil.deleteFiles(getExternalCacheDir());
+                            FileUtil.deleteFiles(getCacheDir());
                             if (mCallback != null) {
                                 mCallback.invoke(1);
                             }
@@ -141,6 +142,7 @@ public class PermissionActionActivity extends Activity implements IWXRenderListe
                     case ACTION_FOUR:  // 获取缓存大小的操作（仅有callback）
                         try {
                             long size = FileUtil.getFolderSize(getExternalCacheDir());
+                            size = size + FileUtil.getFolderSize(getCacheDir());
                             mCallback.invoke(FileUtil.getFormatSize(size));
                         } catch (Exception e) {
                             mCallback.invoke(getResources().getString(R.string.default_size));

@@ -33,6 +33,7 @@ public class CacheModule extends WXModule {
         if (PermissionUtil.hasStoragePermission(activity)) {
             try {
                 long size = FileUtil.getFolderSize(mWXSDKInstance.getContext().getExternalCacheDir());
+                size = size + FileUtil.getFolderSize(mWXSDKInstance.getContext().getCacheDir());
                 callback.invoke(FileUtil.getFormatSize(size));
             } catch (Exception e) {
                 callback.invoke(activity.getResources().getString(R.string.default_size));
@@ -52,6 +53,7 @@ public class CacheModule extends WXModule {
         if (PermissionUtil.hasStoragePermission(activity)) {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 FileUtil.deleteFiles(mWXSDKInstance.getContext().getExternalCacheDir());
+                FileUtil.deleteFiles(mWXSDKInstance.getContext().getCacheDir());
                 if (callback != null) {
                     callback.invoke(1);
                 }
