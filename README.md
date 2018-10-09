@@ -81,6 +81,34 @@
     @JSMethod(uiThread = true)
     public void clearCaches(JSCallback callback)
 ```
+### Android相关功能的Module
+#### 1. Module 名称： UtilModule
+#### 2. 相关方法
+     2.1 获取Android手机软件盘的高度
+```java
+    /**
+     * 获取Android手机软键盘的高度，返回值包括pxHeight（以px为单位）和dpHeight（以dp为单位）
+     *
+     * @param callback           软键盘弹出的回调
+     * @param callbackInvisible  软键盘隐藏的回调
+     */
+    @JSMethod(uiThread = true)
+    public void getSoftKeyInfo(final JSCallback callback, final JSCallback callbackInvisible) 
+```
+    2.1.1 JS端使用说明
+```java
+    weex.requireModule('UtilModule').getSoftKeyInfo(visible => {
+                   // 软键盘弹出后的相关操作
+                    var date = JSON.parse(visible);
+                    console.log("heyn_OtherNormalModule1: "+ date.pxHeight);
+                    console.log("heyn_OtherNormalModule2: "+ date.dpHeight);
+                }, invisible =>{
+		   // 软键盘隐藏后的相关操作
+                    var date = JSON.parse(invisible);
+                    console.log("heyn_OtherNormalModule3: "+ date.pxHeight);
+                    console.log("heyn_OtherNormalModule4: "+ date.dpHeight);
+                });
+```
 
 ### JS 调用方式----举例——清除缓存的使用
 ```java
