@@ -25,12 +25,11 @@ import com.taobao.weex.common.WXModule;
 @WeexModule(name = "UtilModule", lazyLoad = true)
 public class UtilModule extends WXModule {
     boolean isVisiableForLast = false;
-
     /**
-     * 获取Android 手机软键盘的高度
+     * 获取Android手机软键盘的高度
      *
-     * @param callback
-     * @param callbackInvisible
+     * @param callback           软键盘弹出的回调
+     * @param callbackInvisible  软键盘隐藏的回调
      */
     @JSMethod(uiThread = true)
     public void getSoftKeyInfo(final JSCallback callback, final JSCallback callbackInvisible) {
@@ -42,9 +41,9 @@ public class UtilModule extends WXModule {
                 event.setDpHeight(PixInfoUtil.px2dp(mWXSDKInstance.getContext(), windowBottom));
                 event.setPxHeight(windowBottom);
                 if (visible && callback != null) {
-                    callback.invoke(new Gson().toJson(event));
+                    callback.invokeAndKeepAlive(new Gson().toJson(event));
                 } else if (!visible && callbackInvisible != null) {
-                    callbackInvisible.invoke(new Gson().toJson(event));
+                    callbackInvisible.invokeAndKeepAlive(new Gson().toJson(event));
                 }
             }
         });
