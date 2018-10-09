@@ -32,7 +32,7 @@ public class UtilModule extends WXModule {
      * @param callbackInvisible  软键盘隐藏的回调
      */
     @JSMethod(uiThread = true)
-    public void getSoftKeyInfo(final JSCallback callback, final JSCallback callbackInvisible) {
+    public void getSoftKeyInfoAlive(final JSCallback callback, final JSCallback callbackInvisible) {
         final Activity activity = (Activity) mWXSDKInstance.getContext();
         addOnSoftKeyBoardVisibleListener(activity, new IKeyBoardVisibleListener() {
             @Override
@@ -44,6 +44,31 @@ public class UtilModule extends WXModule {
                     callback.invokeAndKeepAlive(new Gson().toJson(event));
                 } else if (!visible && callbackInvisible != null) {
                     callbackInvisible.invokeAndKeepAlive(new Gson().toJson(event));
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 获取Android手机软键盘的高度
+     *
+     * @param callback           软键盘弹出的回调
+     * @param callbackInvisible  软键盘隐藏的回调
+     */
+    @JSMethod(uiThread = true)
+    public void getSoftKeyInfo(final JSCallback callback, final JSCallback callbackInvisible) {
+        final Activity activity = (Activity) mWXSDKInstance.getContext();
+        addOnSoftKeyBoardVisibleListener(activity, new IKeyBoardVisibleListener() {
+            @Override
+            public void onSoftKeyBoardVisible(boolean visible, int windowBottom) {
+                PxOrDpEvent event = new PxOrDpEvent();
+                event.setDpHeight(PixInfoUtil.px2dp(mWXSDKInstance.getContext(), windowBottom));
+                event.setPxHeight(windowBottom);
+                if (visible && callback != null) {
+                    callback.invoke(new Gson().toJson(event));
+                } else if (!visible && callbackInvisible != null) {
+                    callbackInvisible.invoke(new Gson().toJson(event));
                 }
             }
         });
