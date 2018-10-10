@@ -7,5 +7,5 @@ package com.heyn.erosplugin.wx_filemanger.customInterface;
  * Introduce:
  */
 public interface IKeyBoardVisibleListener {
-    void onSoftKeyBoardVisible(boolean visible, int softKeyHeight);
+    void onSoftKeyBoardVisible(boolean visible, int softKeyHeight, int width);
 }
