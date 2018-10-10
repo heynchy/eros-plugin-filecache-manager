@@ -88,13 +88,22 @@
      2.1 获取Android手机软件盘的高度
 ```java
     /**
-     * 获取Android手机软键盘的高度，返回值包括pxHeight（以px为单位）和dpHeight（以dp为单位）
+     * 获取Android手机软键盘的高度，返回值包括pxHeight（以px为单位）和dpHeight（以dp为单位）-----非监听形式
      *
      * @param callback           软键盘弹出的回调
      * @param callbackInvisible  软键盘隐藏的回调
      */
     @JSMethod(uiThread = true)
     public void getSoftKeyInfo(final JSCallback callback, final JSCallback callbackInvisible) 
+    
+   /**
+     * 获取Android手机软键盘的高度----监听形式
+     *
+     * @param callback          软键盘弹出的回调
+     * @param callbackInvisible 软键盘隐藏的回调
+     */
+    @JSMethod(uiThread = true)
+    public void getSoftKeyInfoAlive(final JSCallback callback, final JSCallback callbackInvisible)
 ```
     2.1.1 JS端使用说明
 ```java
