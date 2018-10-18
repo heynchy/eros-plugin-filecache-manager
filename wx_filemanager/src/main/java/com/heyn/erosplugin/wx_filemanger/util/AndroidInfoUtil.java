@@ -41,6 +41,7 @@ public class AndroidInfoUtil {
         }
         return pxHeight;
     }
+
     /**
      * 获取屏幕尺寸，但是不包括虚拟键的高度
      *
@@ -50,6 +51,17 @@ public class AndroidInfoUtil {
         int height = activity.getWindowManager().getDefaultDisplay().getHeight();
         return height;
     }
+
+    /**
+     * 获取屏幕宽度，但是不包括虚拟键的高度
+     *
+     * @return
+     */
+    public static int getScreenWidth(Activity activity) {
+        int width = activity.getWindowManager().getDefaultDisplay().getWidth();
+        return width;
+    }
+
     /**
      * 获取虚拟功能键高度
      *

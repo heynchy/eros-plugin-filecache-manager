@@ -87,6 +87,26 @@ public class UtilModule extends WXModule {
 
     }
 
+    /**
+     * 获取Android屏幕尺寸，但是不包括虚拟键的高度
+     *
+     * @param callback 返回值的回调（已转换为JS端可用数据）
+     */
+    @JSMethod(uiThread = true)
+    public void getNoHasVirtualKey(final JSCallback callback) {
+        final Activity activity = (Activity) mWXSDKInstance.getContext();
+        // 获得屏幕整体的高度
+        int hight = AndroidInfoUtil.getNoHasVirtualKey(activity);
+        // 获得屏幕整体的宽度
+        int width = AndroidInfoUtil.getScreenWidth(activity);
+        if (width != 0) {
+            hight = (int) ((float) hight / width * 750f);
+        }
+        if (callback != null) {
+            callback.invoke(hight);
+        }
+    }
+
     public void addOnSoftKeyBoardVisibleListener(Activity activity, final IKeyBoardVisibleListener listener) {
         final View decorView = activity.getWindow().getDecorView();
         decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
