@@ -4,6 +4,7 @@
  2. 本地缓存大小的获取，清除功能
  3. 跳转至应用市场评分页（支持三星市场）
  4. 获取软键盘的高度
+ 5. 获取屏幕的高度（不包含虚拟按键），版本 0.0.9
 ## Usage
 ###  Add dependency
 ```groovy
@@ -118,6 +119,16 @@
                     console.log("heyn_OtherNormalModule3: "+ date.pxHeight);
                     console.log("heyn_OtherNormalModule4: "+ date.dpHeight);
                 });
+```
+    2.2 获取Android手机的屏幕高度（不包含虚拟按键）
+```java
+    /**
+     * 获取Android屏幕尺寸，但是不包括虚拟键的高度
+     *
+     * @param callback 返回值的回调（已转换为JS端可用数据）
+     */
+    @JSMethod(uiThread = true)
+    public void getNoHasVirtualKey(final JSCallback callback)
 ```
 
 ### JS 调用方式----举例——清除缓存的使用
