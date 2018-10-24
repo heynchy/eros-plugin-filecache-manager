@@ -98,37 +98,39 @@ public class WxDownloadFileActivity extends Activity implements IWXRenderListene
         String fileId = paramsEvent.getFileId() == null ? "" : paramsEvent.getFileId();
         String fileName = paramsEvent.getFileName();
         String url = paramsEvent.getUrl();
+        String token = paramsEvent.getToken();
         String saveDir = getExternalCacheDir() + "/" + fileId;
-        DownloadFileUtil.getInstance().downloadFile(url, saveDir, fileName, new onDownloadListener() {
-            @Override
-            public void onSuccess(String path) {
-                if (mSuccessCB != null) {
-                    mSuccessCB.invoke("下载完成");
-                }
-                try {
-                    startActivity(FileUtil.openFile(path));
-                } catch (ActivityNotFoundException e) {
-                    ToastUtil.getInstance().showToast(getResources()
-                        .getString(R.string.no_find_app));
-                }
-                finish();
-            }
+        DownloadFileUtil.getInstance().downloadFile(DownloadFileUtil.getRequest(token, url),
+                saveDir, fileName, new onDownloadListener() {
+                    @Override
+                    public void onSuccess(String path) {
+                        if (mSuccessCB != null) {
+                            mSuccessCB.invoke("下载完成");
+                        }
+                        try {
+                            startActivity(FileUtil.openFile(path));
+                        } catch (ActivityNotFoundException e) {
+                            ToastUtil.getInstance().showToast(getResources()
+                                    .getString(R.string.no_find_app));
+                        }
+                        finish();
+                    }
 
-            @Override
-            public void onFailure(String reason) {
-                if (mFailureCB != null) {
-                    mFailureCB.invoke("下载失败：" + reason);
-                }
-                finish();
-            }
+                    @Override
+                    public void onFailure(String reason) {
+                        if (mFailureCB != null) {
+                            mFailureCB.invoke("下载失败：" + reason);
+                        }
+                        finish();
+                    }
 
-            @Override
-            public void onProgress(int progress) {
-                if (mProgressCB != null) {
-                    mProgressCB.invoke(progress);
-                }
-            }
-        });
+                    @Override
+                    public void onProgress(int progress) {
+                        if (mProgressCB != null) {
+                            mProgressCB.invoke(progress);
+                        }
+                    }
+                });
     }
 
     /**

@@ -60,35 +60,37 @@ public class FileModule extends WXModule {
             String fileId = paramsEvent.getFileId() == null ? "" : paramsEvent.getFileId();
             String fileName = paramsEvent.getFileName();
             String url = paramsEvent.getUrl();
+            String token = paramsEvent.getToken();
             String saveDir = activity.getExternalCacheDir() + "/" + fileId;
-            DownloadFileUtil.getInstance().downloadFile(url, saveDir, fileName, new onDownloadListener() {
-                @Override
-                public void onSuccess(String path) {
-                    if (success != null) {
-                        success.invoke("下载完成");
-                    }
-                    try {
-                        activity.startActivity(openFile(path));
-                    } catch (ActivityNotFoundException e) {
-                        ToastUtil.getInstance().showToast(activity.getResources()
-                                .getString(R.string.no_find_app));
-                    }
-                }
+            DownloadFileUtil.getInstance().downloadFile(DownloadFileUtil.getRequest(token, url),
+                    saveDir, fileName, new onDownloadListener() {
+                        @Override
+                        public void onSuccess(String path) {
+                            if (success != null) {
+                                success.invoke("下载完成");
+                            }
+                            try {
+                                activity.startActivity(openFile(path));
+                            } catch (ActivityNotFoundException e) {
+                                ToastUtil.getInstance().showToast(activity.getResources()
+                                        .getString(R.string.no_find_app));
+                            }
+                        }
 
-                @Override
-                public void onFailure(String reason) {
-                    if (failure != null) {
-                        failure.invoke("下载失败：" + reason);
-                    }
-                }
+                        @Override
+                        public void onFailure(String reason) {
+                            if (failure != null) {
+                                failure.invoke("下载失败：" + reason);
+                            }
+                        }
 
-                @Override
-                public void onProgress(int pro) {
-                    if (progress != null) {
-                        progress.invoke(pro);
-                    }
-                }
-            });
+                        @Override
+                        public void onProgress(int pro) {
+                            if (progress != null) {
+                                progress.invoke(pro);
+                            }
+                        }
+                    });
 
         } else {
             // 如果没有有存储权限就去申请

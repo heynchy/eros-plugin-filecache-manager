@@ -1,6 +1,8 @@
 package com.heyn.erosplugin.wx_filemanger.util;
 
 
+import android.text.TextUtils;
+
 import com.heyn.erosplugin.wx_filemanger.customInterface.onDownloadListener;
 
 import java.io.File;
@@ -48,13 +50,13 @@ public class DownloadFileUtil {
     /**
      * 带有进度返回的下载
      *
-     * @param url      下载路径
-     * @param saveDir 本地保存文件的绝对路径
+     * @param request   请求的配置request
+     * @param saveDir  本地保存文件的绝对路径
      * @param fileName 文件名称
      * @param listener 下载过程监听器
      */
-    public void downloadFile(final String url, final String saveDir, final String fileName, final onDownloadListener listener) {
-        Request request = new Request.Builder().url(url).build();
+    public void downloadFile(final Request request, final String saveDir, final String fileName, final onDownloadListener listener) {
+//        Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -161,5 +163,23 @@ public class DownloadFileUtil {
         }
         String savePath = downloadFile.getAbsolutePath();
         return savePath;
+    }
+
+    /**
+     * 根据是否存在token返回合适的Request
+     *
+     * @param token
+     * @return
+     */
+    public static Request getRequest(String token, String url) {
+        Request request;
+        if (TextUtils.isEmpty(token)) {
+            request = new Request.Builder().url(url).build();
+        } else {
+            request = new Request.Builder().url(url)
+                    .addHeader("Authorization", token)
+                    .build();
+        }
+        return request;
     }
 }
