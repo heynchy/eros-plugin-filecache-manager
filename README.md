@@ -5,11 +5,12 @@
  3. 跳转至应用市场评分页（支持三星市场）
  4. 获取软键盘的高度
  5. 获取屏幕的高度（不包含虚拟按键），版本 0.0.9
+ 6. 为下载添加token参数，版本0.1.0
 ## Usage
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.0.9'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1.0'
 	}
 
 ```
@@ -23,7 +24,7 @@
    /**
      * 下载文件的方法，带有进度的
      *
-     * @param params   必须传递（Json 格式）,相关参数包含url, fileId, fileName
+     * @param params   必须传递（Json 格式）,相关参数包含url, fileId, fileName，token(需要权限的传递该参数)
      * @param success  下载成功的回调
      * @param failure  下载失败的回调
      * @param progress 下载进度的回调
