@@ -227,7 +227,6 @@ public class FileUtil {
     public static Uri getAndroidUri(String param) {
         Uri uri;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            Log.i("heyn","PACKAGE_NAME:" + PACKAGE_NAME);
             uri = FileProvider.getUriForFile(
                 Application.getAppContext(),
                 PACKAGE_NAME,
