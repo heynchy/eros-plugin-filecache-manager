@@ -249,7 +249,7 @@ public class FileUtil {
         Uri uri;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             uri = FileProvider.getUriForFile(
-                    Application.getInstance().getApplicationContext(),
+                    Application.getAppContext(),
                 PACKAGE_NAME,
                 new File(param));
         } else {
