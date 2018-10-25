@@ -1,5 +1,5 @@
 # eros-plugin-filecache-manager
-         -----当前支持wxframework <= 1.0.9的版本
+      当前支持  wxframework <= 1.0.9  的版本
 基于Eros框架下的相关功能（weex 与 Android 的交互）：
  1. Android端文件的查看，下载，预览基本功能
  2. 本地缓存大小的获取，清除功能
