@@ -14,7 +14,7 @@
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1.1'
 	}
 
 ```
