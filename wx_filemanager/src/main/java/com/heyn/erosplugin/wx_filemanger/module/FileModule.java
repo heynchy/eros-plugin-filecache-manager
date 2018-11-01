@@ -87,7 +87,7 @@ public class FileModule extends WXModule {
                         @Override
                         public void onProgress(int pro) {
                             if (progress != null) {
-                                progress.invoke(pro);
+                                progress.invokeAndKeepAlive(pro);
                             }
                         }
                     });

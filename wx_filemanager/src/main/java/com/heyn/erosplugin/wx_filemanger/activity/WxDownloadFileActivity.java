@@ -127,7 +127,7 @@ public class WxDownloadFileActivity extends Activity implements IWXRenderListene
                     @Override
                     public void onProgress(int progress) {
                         if (mProgressCB != null) {
-                            mProgressCB.invoke(progress);
+                            mProgressCB.invokeAndKeepAlive(progress);
                         }
                     }
                 });
