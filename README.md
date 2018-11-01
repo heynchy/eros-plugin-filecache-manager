@@ -1,16 +1,22 @@
 # eros-plugin-filecache-manager
-基于Eros框架下的相关功能（weex 与 Android 的交互）：
+
+####  当前工具类支持--基础依赖包wxframework <= 1.0.9 的版本
+
+####  如果您的基础依赖包wxframework的版本 > 1.0.9 , 为了使该工具类继续可以使用， 可前往: [Eros-plugin-android-extend](https://github.com/heynchy/eros-plugin-android-extend)
+      
+#### 基于Eros框架下的相关功能（weex 与 Android 的交互）：
  1. Android端文件的查看，下载，预览基本功能
  2. 本地缓存大小的获取，清除功能
  3. 跳转至应用市场评分页（支持三星市场）
  4. 获取软键盘的高度
  5. 获取屏幕的高度（不包含虚拟按键），版本 0.0.9
- 6. 为下载添加token参数，版本0.1
+ 6. 为下载添加token参数，版本 0.1
+ 7. 修改打开Txt文档崩溃的BUG  ， 版本0.1.1
 ## Usage
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1.1'
 	}
 
 ```
