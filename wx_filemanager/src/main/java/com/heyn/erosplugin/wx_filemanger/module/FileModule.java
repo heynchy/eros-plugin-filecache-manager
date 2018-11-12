@@ -69,12 +69,12 @@ public class FileModule extends WXModule {
                             if (success != null) {
                                 success.invoke("下载完成");
                             }
-                            try {
-                                activity.startActivity(openFile(path));
-                            } catch (ActivityNotFoundException e) {
-                                ToastUtil.getInstance().showToast(activity.getResources()
-                                        .getString(R.string.no_find_app));
-                            }
+//                            try {
+//                                activity.startActivity(openFile(path));
+//                            } catch (ActivityNotFoundException e) {
+//                                ToastUtil.getInstance().showToast(activity.getResources()
+//                                        .getString(R.string.no_find_app));
+//                            }
                         }
 
                         @Override

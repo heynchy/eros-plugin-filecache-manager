@@ -107,12 +107,12 @@ public class WxDownloadFileActivity extends Activity implements IWXRenderListene
                         if (mSuccessCB != null) {
                             mSuccessCB.invoke("下载完成");
                         }
-                        try {
-                            startActivity(FileUtil.openFile(path));
-                        } catch (ActivityNotFoundException e) {
-                            ToastUtil.getInstance().showToast(getResources()
-                                    .getString(R.string.no_find_app));
-                        }
+//                        try {
+//                            startActivity(FileUtil.openFile(path));
+//                        } catch (ActivityNotFoundException e) {
+//                            ToastUtil.getInstance().showToast(getResources()
+//                                    .getString(R.string.no_find_app));
+//                        }
                         finish();
                     }
 
