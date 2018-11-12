@@ -13,11 +13,12 @@
  6. 为下载添加token参数，版本 0.1
  7. 修改打开Txt文档崩溃的BUG  ， 版本0.1.1
  8. 修改下载文件的进度值的返回值问题， 版本0.1.2
+ 9. 为了提高与JS端交互时下载后打开文件的灵活性，隐藏了下载完成后主动打开的功能，JS端可使用previewFile(params)主动打开， 版本0.1.3
 ## Usage
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1.2'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1.3'
 	}
 
 ```
