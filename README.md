@@ -14,11 +14,12 @@
  7. 修改打开Txt文档崩溃的BUG  ， 版本0.1.1
  8. 修改下载文件的进度值的返回值问题， 版本0.1.2
  9. 为了提高与JS端交互时下载后打开文件的灵活性，隐藏了下载完成后主动打开的功能，JS端可使用previewFile(params)主动打开， 版本0.1.3
+ 10. 增加在当前app中打开其他app的方法；增加Android端的本地存储工具类，等同于JS端的storage存储方式，可通用，  版本0.1.4
 ## Usage
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1.3'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1.4'
 	}
 
 ```
@@ -139,7 +140,58 @@
     @JSMethod(uiThread = true)
     public void getNoHasVirtualKey(final JSCallback callback)
 ```
-
+    2.3 在当前app打开另外一个app
+```java
+    /**
+     * 打开另外一个APP
+     *
+     * @param params             相关参数配置（JSON格式，包括如下参数）
+     *                              ----- packageName: 包名（APPLICATION_ID）--->必须提供
+     *                              ----- activityName: 页面的路径名（例如com.benmu.wx.activity.SplashActivity）--->可选
+     *                              ----- key: 需要传参时的key--->可选(key 和 params，要么都为空，要么都不为空)
+     *                              ----- params: Json格式，所传的参数--->可选(key 和 params，要么都为空，要么都不为空)
+     * @param resultCallback     结果回调（true: 打开成功， false: 打开失败）
+     * @param installed          安装回调（如果未安装，会响应---该回调）
+     */
+    @JSMethod(uiThread = true)
+    public void openOtherApp(String params, JSCallback resultCallback, JSCallback installed)
+```
+     2.3.1 JS端的使用方式----打开另一个APP
+```java
+           weex.requireModule('UtilModule').openOtherApp({
+                packageName:'com.test.heynchy',
+                activityName:'com.benmu.wx.activity.SplashActivity',
+                key:'TEST',
+                params:'{"token":"mytoken","usename":"heynchy","useId":"helloID"}'
+            }, result =>{
+	        // 打开成功返回true, 打开失败返回false
+                console.log("heyn","result: "+result)
+            }, inststall =>{
+	       // 如果检测到为未安装则执行该函数，
+	       // TODO 下载需要打开的app
+                console.log("heyn","inststall: "+inststall)
+            });
+```
+    2.3.2 注意事项 
+       1. activityName:  如果该值不为null, 即指定了打开的页面，则需要在AndroidManifest.xml 中的指定的页面activity
+                         中添加  android:exported="true" ； 例如上面示例中，需要添加在
+			  <activity
+                           android:name=".activity.SplashActivity"
+                           android:theme="@style/FullscreenTheme"
+                           android:exported="true"
+			   ......
+      2.  acitivityName如果为null, 则打开后默认跳转至app的启动页
+      3.  如果要在两个app之间传递参数，则key值需保持一致，才能接收到 getIntent().getStringExtra(key);
+			 
+### Android 原生方法工具类
+####  存储工具类 ErosStorageUtil
+##### 相关方法：
+      1. 本地数据保存
+          ErosStorageUtil.put(Context context, String key, String value);
+      2. 存储数据移除
+          ErosStorageUtil.remove(Context context, String key)
+      3. 存储数据获取
+          ErosStorageUtil.get(Context context, String key)，返回值String类型
 ### JS 调用方式----举例——清除缓存的使用
 ```java
 <template>
