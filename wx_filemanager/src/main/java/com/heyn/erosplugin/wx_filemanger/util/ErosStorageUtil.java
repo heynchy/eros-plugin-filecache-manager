@@ -63,7 +63,12 @@ public class ErosStorageUtil {
         }
         StorageManager storageManager = ManagerFactory.getManagerService(StorageManager.class);
         if (storageManager != null) {
-            return storageManager.getData(context, key);
+            String result = storageManager.getData(context, key);
+            if (!TextUtils.isEmpty(result)) {
+                StorageObject object = new Gson().fromJson(result, StorageObject.class);
+                result = object.getValue();
+            }
+            return result;
         }
         return null;
     }
