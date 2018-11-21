@@ -16,7 +16,7 @@ import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_FOUR;
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_THREE;
 
 /**
- * Author: 崔海营
+ * Author: Heynchy
  * Date:   2018/9/19
  * <p>
  * Introduce:

@@ -1,7 +1,9 @@
 package com.heyn.erosplugin.wx_filemanger.module;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -11,6 +13,7 @@ import android.view.ViewTreeObserver;
 import com.alibaba.weex.plugin.annotation.WeexModule;
 import com.google.gson.Gson;
 import com.heyn.erosplugin.wx_filemanger.customInterface.IKeyBoardVisibleListener;
+import com.heyn.erosplugin.wx_filemanger.event.AppIntentEvent;
 import com.heyn.erosplugin.wx_filemanger.event.PxOrDpEvent;
 import com.heyn.erosplugin.wx_filemanger.util.AndroidInfoUtil;
 import com.heyn.erosplugin.wx_filemanger.util.PixInfoUtil;
@@ -22,7 +25,7 @@ import java.lang.reflect.Method;
 
 
 /**
- * Author: 崔海营
+ * Author: Heynchy
  * Date:   2018/10/9
  * <p>
  * Introduce: Android 与 Eros交互所用到的日常工具类
@@ -85,6 +88,37 @@ public class UtilModule extends WXModule {
             }
         });
 
+    }
+
+    /**
+     * 打开另外一个APP
+     *
+     * @param params               相关参数配置（JSON格式）
+     * @param resultCallback       结果回调（true: 打开成功， false: 打开失败）
+     * @param installed            安装回调（如果未安装，会响应---该回调）
+     */
+    @JSMethod(uiThread = true)
+    public void openOtherApp(String params, JSCallback resultCallback, JSCallback installed) {
+        AppIntentEvent event = new Gson().fromJson(params, AppIntentEvent.class);
+        Context context = mWXSDKInstance.getContext();
+        if (AndroidInfoUtil.checkApkExist(context, event.getPackageName())) {
+            try {
+                if (TextUtils.isEmpty(event.getActivityName())) {
+                    AndroidInfoUtil.openApk(context, event.getPackageName(), event.getKey(),
+                            event.getParams());
+                } else {
+                    AndroidInfoUtil.openApk(context, event.getPackageName(), event.getActivityName(),
+                            event.getKey(), event.getParams());
+                }
+                resultCallback.invoke(true);
+            } catch (Exception e) {
+                resultCallback.invoke(false);
+            }
+
+        } else {
+            // 应用包未安装
+            installed.invoke(false);
+        }
     }
 
     /**

@@ -1,13 +1,20 @@
 package com.heyn.erosplugin.wx_filemanger.util;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Author: 崔海营
@@ -85,4 +92,62 @@ public class AndroidInfoUtil {
         }
         return vh;
     }
+
+    /**
+     * 根据包名打开 APK
+     *
+     * @param context
+     * @param packageName
+     * @param key
+     * @param params
+     */
+    public static void openApk(Context context, String packageName, String key, String params) {
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = new Intent();
+        intent = packageManager.getLaunchIntentForPackage(packageName);
+        if (!(TextUtils.isEmpty(key) || TextUtils.isEmpty(params))) {
+            intent.putExtra(key, params);
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 根据包名和类名打开APK
+     *
+     * @param context
+     * @param packageName
+     * @param activityName
+     * @param key
+     * @param params
+     */
+    public static void openApk(Context context, String packageName, String activityName, String key, String params) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        ComponentName componentName = new ComponentName(packageName, activityName);
+        intent.setComponent(componentName);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (!(TextUtils.isEmpty(key) || TextUtils.isEmpty(params))) {
+            intent.putExtra(key, params);
+        }
+        context.startActivity(intent);
+    }
+
+    /**
+     * 检测应用是否已安装
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static boolean checkApkExist(Context context, String packageName) {
+        if (TextUtils.isEmpty(packageName)) return false;
+        try {
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName,
+                    PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
 }

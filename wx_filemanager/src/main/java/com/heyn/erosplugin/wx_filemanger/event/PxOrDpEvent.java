@@ -3,7 +3,7 @@ package com.heyn.erosplugin.wx_filemanger.event;
 import java.io.Serializable;
 
 /**
- * Author: 崔海营
+ * Author: Heynchy
  * Date:   2018/10/9
  * <p>
  * Introduce:

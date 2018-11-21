@@ -30,7 +30,7 @@ import static com.heyn.erosplugin.wx_filemanger.util.FileUtil.*;
 
 
 /**
- * Author: 崔海营
+ * Author: Heynchy
  * Date:   2018/9/19
  * <p>
  * Introduce: 文件相关的操作，主要包括下载，预览功能
