@@ -14,7 +14,10 @@
  7. 修改打开Txt文档崩溃的BUG  ， 版本0.1.1
  8. 修改下载文件的进度值的返回值问题， 版本0.1.2
  9. 为了提高与JS端交互时下载后打开文件的灵活性，隐藏了下载完成后主动打开的功能，JS端可使用previewFile(params)主动打开， 版本0.1.3
- 10. 增加在当前app中打开其他app的方法；增加Android端的本地存储工具类，等同于JS端的storage存储方式，可通用，  版本0.1.4
+ 10. 增加在当前app中打开其他app的方法；
+     增加Android端的本地存储工具类，等同于JS端的storage存储方式
+     本地存储和JS端的存储可通用， 即Android端可根据key值获取JS存储的数据；
+     JS端可根据key值获取Android端存储的数据；      版本0.1.4
 ## Usage
 ###  Add dependency
 ```groovy
