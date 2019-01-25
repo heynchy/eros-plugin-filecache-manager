@@ -26,6 +26,7 @@ import com.taobao.weex.bridge.JSCallback;
 
 import java.io.File;
 
+import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_FIVE;
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_FOUR;
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_NUM;
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_ONE;
@@ -146,6 +147,19 @@ public class PermissionActionActivity extends Activity implements IWXRenderListe
                             mCallback.invoke(FileUtil.getFormatSize(size));
                         } catch (Exception e) {
                             mCallback.invoke(getResources().getString(R.string.default_size));
+                        }
+                        break;
+                    case ACTION_FIVE:  // 本地文件预览的操作
+                        if (new File(mParamas).exists()) {
+                            try {
+                                startActivity(FileUtil.openFile(mParamas));
+                            } catch (ActivityNotFoundException e) {
+                                ToastUtil.getInstance().showToast(getResources()
+                                        .getString(R.string.no_find_app));
+                            }
+                        } else {
+                            ToastUtil.getInstance().showToast(getResources()
+                                    .getString(R.string.file_not_exist));
                         }
                         break;
                 }

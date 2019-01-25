@@ -24,6 +24,7 @@ import com.taobao.weex.common.WXModule;
 
 import java.io.File;
 
+import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_FIVE;
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_ONE;
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_TWO;
 import static com.heyn.erosplugin.wx_filemanger.util.FileUtil.*;
@@ -159,7 +160,37 @@ public class FileModule extends WXModule {
                     null);
         }
     }
-
+    /**
+     * 预览本地文件
+     *
+     * @param params
+     */
+    @JSMethod(uiThread = true)
+    public void previewLocalFile(String params) {
+        ParamsEvent event = new Gson().fromJson(params, ParamsEvent.class);
+        if (TextUtils.isEmpty(event.getFilePath())) {
+            ToastUtil.getInstance().showToast("本地文件路径不存在！");
+            return;
+        }
+        String filePath = event.getFilePath();
+        final Activity activity = (Activity) mWXSDKInstance.getContext();
+        if (PermissionUtil.hasStoragePermission(activity)) {
+            if (new File(filePath).exists()) {
+                try {
+                    activity.startActivity(openFile(filePath));
+                } catch (ActivityNotFoundException e) {
+                    ToastUtil.getInstance().showToast(activity.getResources()
+                            .getString(R.string.no_find_app));
+                }
+            } else {
+                ToastUtil.getInstance().showToast(activity.getResources()
+                        .getString(R.string.file_not_exist));
+            }
+        } else {
+            PermissionActionActivity.start(mWXSDKInstance.getContext(), ACTION_FIVE, filePath,
+                    null);
+        }
+    }
     /**
      * 跳转至应用市场的评价界面
      */

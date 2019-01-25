@@ -13,6 +13,7 @@ public class ParamsEvent implements Serializable {
     String fileId;   // 文件ID
     String fileName; // 文件名称
     String token;    // 权限token
+    String filePath; // 本地文件路径
 
     public String getUrl() {
         return url;
@@ -44,5 +45,13 @@ public class ParamsEvent implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

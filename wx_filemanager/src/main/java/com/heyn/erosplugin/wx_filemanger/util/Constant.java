@@ -17,5 +17,6 @@ public class Constant {
     public static final int ACTION_TWO = 2;                         // 预览文件操作
     public static final int ACTION_THREE = 3;                       // 清除缓存操作
     public static final int ACTION_FOUR = 4;                        // 获取缓存大小的操作
+    public static final int ACTION_FIVE = 5;                        // 预览本地文件操作
     public static final String CUSTOM_CALLBACK = "custom_callback"; // 普通的回调参数
 }
