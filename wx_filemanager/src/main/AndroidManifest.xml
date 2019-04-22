@@ -7,6 +7,9 @@
         <activity
             android:name=".activity.PermissionActionActivity"
             android:theme="@style/weexTitle" />
+        <activity
+            android:name=".activity.WxUploadFileActivity"
+            android:theme="@style/weexTitle" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

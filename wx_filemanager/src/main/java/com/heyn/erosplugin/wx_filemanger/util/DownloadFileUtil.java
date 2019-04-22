@@ -3,17 +3,24 @@ package com.heyn.erosplugin.wx_filemanger.util;
 
 import android.text.TextUtils;
 
+import com.heyn.erosplugin.wx_filemanger.customInterface.OnProgressListener;
 import com.heyn.erosplugin.wx_filemanger.customInterface.onDownloadListener;
+import com.heyn.erosplugin.wx_filemanger.customInterface.onUploadListener;
+import com.taobao.weex.bridge.JSCallback;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Headers;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -50,7 +57,7 @@ public class DownloadFileUtil {
     /**
      * 带有进度返回的下载
      *
-     * @param request   请求的配置request
+     * @param request  请求的配置request
      * @param saveDir  本地保存文件的绝对路径
      * @param fileName 文件名称
      * @param listener 下载过程监听器
@@ -108,6 +115,10 @@ public class DownloadFileUtil {
 
                         }
                     }
+                } else {
+                    if (listener != null) {
+                        listener.onFailure("url请求异常，无法建立链接");
+                    }
                 }
             }
         });
@@ -142,7 +153,48 @@ public class DownloadFileUtil {
                     }
                 } else {
                     if (listener != null) {
-                        listener.onFailure("下载失败！");
+                        listener.onFailure("url请求异常，无法建立链接！");
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 文件上传
+     *
+     * @param request
+     * @param listener
+     */
+    public void uploadFile(final Request request, final onUploadListener listener) {
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (listener != null) {
+                    listener.onFailure(e.toString());
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    if (response.isSuccessful()) {
+                        //下载完成
+                        if (listener != null) {
+                            listener.onSuccess(response.body().string());
+                        }
+                    } else {
+                        if (listener != null) {
+                            listener.onFailure("文件上传失败");
+                        }
+                    }
+                } catch (Exception e) {
+                    if (listener != null) {
+                        listener.onFailure("文件上传失败: " + e.getMessage());
+                    }
+                } finally {
+                    if (response.body() != null) {
+                        response.close();
                     }
                 }
             }
@@ -181,5 +233,53 @@ public class DownloadFileUtil {
                     .build();
         }
         return request;
+    }
+
+    /**
+     * 文件上传创建合适的Request
+     *
+     * @param headers 头文件的相关参数值（Map 类型）
+     * @param params  其他表单参数
+     * @param url     上传的接口路径
+     * @return request
+     */
+    public static Request getRequest(Map<String, String> headers, Map<String, Object> params, String url, File file, String fileKey, final JSCallback progress) {
+        Request.Builder requestBuilder = new Request.Builder().url(url);
+        // 添加头文件的相关参数（token和其他）
+        if (headers != null && !headers.isEmpty()) {
+            Headers.Builder headerBuilder = new Headers.Builder();
+            for (String key : headers.keySet()) {
+                headerBuilder.add(key, headers.get(key));
+            }
+            requestBuilder.headers(headerBuilder.build());
+        }
+        MultipartBody.Builder bodyBulid = new MultipartBody.Builder();
+        // 设置类型
+        bodyBulid.setType(MultipartBody.FORM);
+        // 追加参数
+        if (params != null && !params.isEmpty()) {
+            for (String key : params.keySet()) {
+                Object object = params.get(key);
+                if (!(object instanceof File)) {
+                    bodyBulid.addFormDataPart(key, object.toString());
+                }
+            }
+        }
+        if (TextUtils.isEmpty(fileKey)) {
+            fileKey = "file";
+        }
+        bodyBulid.addFormDataPart(fileKey, file.getName(), RequestBody.create(null, file));
+        // 创建ExMultipartBody代理类，使其能够返回进度值
+        ExMultipartBody exMultipartBody = new ExMultipartBody(bodyBulid.build(),
+                new OnProgressListener() {
+                    @Override
+                    public void onProgress(long total, long current) {
+                        if (progress != null && total != 0) {
+                            progress.invokeAndKeepAlive((int) current*100 / total);
+                        }
+                    }
+                });
+        requestBuilder.post(exMultipartBody);
+        return requestBuilder.build();
     }
 }

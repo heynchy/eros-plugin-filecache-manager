@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.heyn.erosplugin.wx_filemanger.R;
 import com.heyn.erosplugin.wx_filemanger.activity.PermissionActionActivity;
 import com.heyn.erosplugin.wx_filemanger.activity.WxDownloadFileActivity;
+import com.heyn.erosplugin.wx_filemanger.activity.WxUploadFileActivity;
 import com.heyn.erosplugin.wx_filemanger.customInterface.onDownloadListener;
 import com.heyn.erosplugin.wx_filemanger.event.ParamsEvent;
 import com.heyn.erosplugin.wx_filemanger.util.DownloadFileUtil;
@@ -217,5 +218,20 @@ public class FileModule extends WXModule {
             ToastUtil.getInstance().showToast("您的手机没有安装Android应用市场");
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 上传本地文件
+     *
+     * @param params  相关参数
+     * @param success 成功的回调
+     * @param failure 失败的回调
+     * @param progress 上传进度返回值
+     */
+    @JSMethod(uiThread = true)
+    public void pickAndUpload(String params, final JSCallback success, final JSCallback failure,
+                              final JSCallback progress) {
+        final Activity activity = (Activity) mWXSDKInstance.getContext();
+        WxUploadFileActivity.start(activity, params, success, failure, progress);
     }
 }
