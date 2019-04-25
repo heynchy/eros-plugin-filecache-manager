@@ -74,19 +74,24 @@
     @JSMethod(uiThread = true)
     public void marketComment()
 ```
-    2.5 选择本地文件并上传
+    2.5 选择本地文件并上传（JS端的调用实现方式）
 ```java
-    /**
-     * 上传本地文件------相关参数params的设置类比图片上传的url, header , params的格式进行设置即可
-     *
-     * @param params  相关参数,相关参数（url 上传的地址链接； header: 头参数；params 表单参数） 
-     * @param success 成功的回调
-     * @param failure 失败的回调
-     * @param progress 上传进度返回值
-     */
-    @JSMethod(uiThread = true)
-    public void pickAndUpload(String params, final JSCallback success, final JSCallback failure,
-                              final JSCallback progress) 
+        weex.requireModule('FileModule').pickAndUpload({
+            url: '',      // 上传的接口地址
+            header: {     // 上传的相关头文件信息
+                'Content-Type':'multipart/form-data',  // 必传参数
+                'Authorization':data                   // token (如果没有可以不传)
+            }，
+	    params:{
+	         // 其他参数的信息（可参考Eros图片上传时该处的取值格式进行设置）
+	    }，
+        }, success =>{
+            // 上传成功的回调
+        }, failure => {
+            // 上传失败的回调
+        }，progress => {
+	   // 进度值的回调（0--100）
+	});
 ```
 ### 缓存数据操作Module
 #### 1.	Module 名称： CacheModule
