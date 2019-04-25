@@ -18,11 +18,12 @@
      增加Android端的本地存储工具类，等同于JS端的storage存储方式
      本地存储和JS端的存储可通用， 即Android端可根据key值获取JS存储的数据；
      JS端可根据key值获取Android端存储的数据；      版本0.1.4
+ 11. 增加本地选择文件并上传的功能（上传的代码逻辑类比Eros中的图片上传） 版本0.1.5
 ## Usage
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1.4'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1.5'
 	}
 
 ```
