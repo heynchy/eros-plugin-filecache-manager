@@ -74,6 +74,20 @@
     @JSMethod(uiThread = true)
     public void marketComment()
 ```
+    2.5 选择本地文件并上传
+```java
+    /**
+     * 上传本地文件------相关参数params的设置类比图片上传的url, header , params的格式进行设置即可
+     *
+     * @param params  相关参数,相关参数（url 上传的地址链接； header: 头参数；params 表单参数） 
+     * @param success 成功的回调
+     * @param failure 失败的回调
+     * @param progress 上传进度返回值
+     */
+    @JSMethod(uiThread = true)
+    public void pickAndUpload(String params, final JSCallback success, final JSCallback failure,
+                              final JSCallback progress) 
+```
 ### 缓存数据操作Module
 #### 1.	Module 名称： CacheModule
 #### 2.	相关方法
