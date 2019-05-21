@@ -235,3 +235,4 @@ public class FileModule extends WXModule {
         WxUploadFileActivity.start(activity, params, success, failure, progress);
     }
 }
+

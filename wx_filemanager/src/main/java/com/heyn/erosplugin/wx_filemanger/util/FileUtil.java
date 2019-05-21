@@ -59,7 +59,7 @@ public class FileUtil {
             return getApkFileIntent(filePath);
         } else if (end.equals("ppt")) {
             return getPptFileIntent(filePath);
-        } else if (end.equals("xls")) {
+        } else if (end.equals("xls") || end.equals("xlsx")) {
             return getExcelFileIntent(filePath);
         } else if (end.equals("doc")) {
             return getWordFileIntent(filePath);
