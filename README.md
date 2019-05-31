@@ -209,7 +209,7 @@
 			   ......
       2.  acitivityName如果为null, 则打开后默认跳转至app的启动页
       3.  如果要在两个app之间传递参数，则key值需保持一致，才能接收到 getIntent().getStringExtra(key);
-    2.4 获取应用宝的MD5
+    2.4 获取应用包（当前APP的APK包）的MD5
        weex.requireModule('UtilModule').getAPKMD5Code(success =>{
             console.log("chy1234", "success===="+success);
             this.$notice.alert({
