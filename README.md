@@ -19,12 +19,14 @@
      本地存储和JS端的存储可通用， 即Android端可根据key值获取JS存储的数据；
      JS端可根据key值获取Android端存储的数据；      版本0.1.4
  11. 增加本地选择文件并上传的功能（上传的代码逻辑类比Eros中的图片上传） 版本0.1.5
- 12. 增加打开xlsx文件的方式      版本0.1.6  
+ 12. 增加打开xlsx文件的方式      版本0.1.6
+ 13. 增加获取apk包的MD5值的方法， 用以完整性校验 版本0.1.9
+ 14. 增加强制退出app的功能（kill进程）          版本0.2
 ## Usage
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.1.6'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.2'
 	}
 
 ```
@@ -196,6 +198,7 @@
                 console.log("heyn","inststall: "+inststall)
             });
 ```
+
     2.3.2 注意事项 
        1. activityName:  如果该值不为null, 即指定了打开的页面，则需要在AndroidManifest.xml 中的指定的页面activity
                          中添加  android:exported="true" ； 例如上面示例中，需要添加在
@@ -206,6 +209,19 @@
 			   ......
       2.  acitivityName如果为null, 则打开后默认跳转至app的启动页
       3.  如果要在两个app之间传递参数，则key值需保持一致，才能接收到 getIntent().getStringExtra(key);
+    2.4 获取应用宝的MD5
+       weex.requireModule('UtilModule').getAPKMD5Code(success =>{
+            console.log("chy1234", "success===="+success);
+            this.$notice.alert({
+                message:'success====='+success
+            });
+        }, failure=>{
+            this.$notice.alert({
+                message:'failure====='+failure
+            });
+        });
+     2.5 强制退出APP
+        weex.requireModule('UtilModule').exitAPP();
 			 
 ### Android 原生方法工具类
 ####  存储工具类 ErosStorageUtil
