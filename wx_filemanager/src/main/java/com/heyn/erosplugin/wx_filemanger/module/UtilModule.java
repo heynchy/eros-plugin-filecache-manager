@@ -3,10 +3,8 @@ package com.heyn.erosplugin.wx_filemanger.module;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Process;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -25,7 +23,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -100,9 +97,9 @@ public class UtilModule extends WXModule {
     /**
      * 打开另外一个APP
      *
-     * @param params               相关参数配置（JSON格式）
-     * @param resultCallback       结果回调（true: 打开成功， false: 打开失败）
-     * @param installed            安装回调（如果未安装，会响应---该回调）
+     * @param params         相关参数配置（JSON格式）
+     * @param resultCallback 结果回调（true: 打开成功， false: 打开失败）
+     * @param installed      安装回调（如果未安装，会响应---该回调）
      */
     @JSMethod(uiThread = true)
     public void openOtherApp(String params, JSCallback resultCallback, JSCallback installed) {
@@ -180,7 +177,7 @@ public class UtilModule extends WXModule {
      * @param failure
      */
     @JSMethod(uiThread = true)
-    public void getAPKMD5Code(final JSCallback success, final  JSCallback failure) {
+    public void getAPKMD5Code(final JSCallback success, final JSCallback failure) {
         String apkPath = mWXSDKInstance.getContext().getPackageCodePath(); // 获取Apk包存储路径
         try {
             MessageDigest dexDigest = MessageDigest.getInstance("MD5");
@@ -201,6 +198,15 @@ public class UtilModule extends WXModule {
         } catch (IOException e) {
             failure.invoke(e.getMessage());
         }
+    }
+
+    /**
+     * 强制退出APP（KILL PROGRESS）
+     */
+    @JSMethod(uiThread = true)
+    public void exitAPP() {
+        // 强制退出程序
+        Process.killProcess(Process.myPid());
     }
 
 
