@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Process;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -14,6 +15,7 @@ import com.heyn.erosplugin.wx_filemanger.customInterface.IKeyBoardVisibleListene
 import com.heyn.erosplugin.wx_filemanger.event.AppIntentEvent;
 import com.heyn.erosplugin.wx_filemanger.event.PxOrDpEvent;
 import com.heyn.erosplugin.wx_filemanger.util.AndroidInfoUtil;
+import com.heyn.erosplugin.wx_filemanger.util.Md5Util;
 import com.heyn.erosplugin.wx_filemanger.util.PixInfoUtil;
 import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;
@@ -183,19 +185,20 @@ public class UtilModule extends WXModule {
             MessageDigest dexDigest = MessageDigest.getInstance("MD5");
             byte[] bytes = new byte[1024];
             int byteCount;
-            FileInputStream fis = new FileInputStream(new File(apkPath)); // 读取apk文件
-            while ((byteCount = fis.read(bytes)) != -1) {
-                dexDigest.update(bytes, 0, byteCount);
-            }
-            BigInteger bigInteger = new BigInteger(1, dexDigest.digest()); // 计算apk文件的哈希值
-            String sha = bigInteger.toString(16);
-            fis.close();
+            String sha = Md5Util.getFileMD5(new File(apkPath));
+            Log.i("HEYN_MD5","Current Md5 is " + sha);
             success.invoke(sha);
+//            FileInputStream fis = new FileInputStream(new File(apkPath)); // 读取apk文件
+//            while ((byteCount = fis.read(bytes)) != -1) {
+//                dexDigest.update(bytes, 0, byteCount);
+//            }
+//            BigInteger bigInteger = new BigInteger(1, dexDigest.digest()); // 计算apk文件的哈希值
+//            String sha = bigInteger.toString(16);
+//            fis.close();
+//            success.invoke(sha);
         } catch (NoSuchAlgorithmException e) {
             failure.invoke(e.getMessage());
-        } catch (FileNotFoundException e) {
-            failure.invoke(e.getMessage());
-        } catch (IOException e) {
+        } catch (Exception e) {
             failure.invoke(e.getMessage());
         }
     }
