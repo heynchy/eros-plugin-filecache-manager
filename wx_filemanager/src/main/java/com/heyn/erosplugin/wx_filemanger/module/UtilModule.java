@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import com.alibaba.weex.plugin.annotation.WeexModule;
+import com.benmu.framework.utils.TextUtil;
 import com.google.gson.Gson;
 import com.heyn.erosplugin.wx_filemanger.customInterface.IKeyBoardVisibleListener;
 import com.heyn.erosplugin.wx_filemanger.event.AppIntentEvent;
@@ -55,9 +56,13 @@ public class UtilModule extends WXModule {
                 if (width != 0) {
                     windowBottom = (int) ((float) windowBottom / width * 750f);
                 }
+                String model = android.os.Build.MODEL; // 手机机型
                 PxOrDpEvent event = new PxOrDpEvent();
                 event.setDpHeight(PixInfoUtil.px2dp(mWXSDKInstance.getContext(), windowBottom));
                 event.setPxHeight(windowBottom);
+                if(!TextUtils.isEmpty(model)){
+                    event.setPhoneModel(model);
+                }
                 if (visible && callback != null) {
                     callback.invokeAndKeepAlive(new Gson().toJson(event));
                 } else if (!visible && callbackInvisible != null) {
@@ -83,9 +88,13 @@ public class UtilModule extends WXModule {
                 if (width != 0) {
                     windowBottom = (int) ((float) windowBottom / width * 750f);
                 }
+                String model = android.os.Build.MODEL; // 手机机型
                 PxOrDpEvent event = new PxOrDpEvent();
                 event.setDpHeight(PixInfoUtil.px2dp(mWXSDKInstance.getContext(), windowBottom));
                 event.setPxHeight(windowBottom);
+                if(!TextUtils.isEmpty(model)){
+                    event.setPhoneModel(model);
+                }
                 if (visible && callback != null) {
                     callback.invoke(new Gson().toJson(event));
                 } else if (!visible && callbackInvisible != null) {

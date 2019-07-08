@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class PxOrDpEvent implements Serializable {
     int pxHeight;
     int dpHeight;
+    private String phoneModel;  // 手机机型
 
     public int getDpHeight() {
         return dpHeight;
@@ -26,5 +27,13 @@ public class PxOrDpEvent implements Serializable {
 
     public void setPxHeight(int pxHeight) {
         this.pxHeight = pxHeight;
+    }
+
+    public String getPhoneModel() {
+        return phoneModel;
+    }
+
+    public void setPhoneModel(String phoneModel) {
+        this.phoneModel = phoneModel;
     }
 }
