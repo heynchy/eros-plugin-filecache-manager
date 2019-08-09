@@ -22,11 +22,12 @@
  12. 增加打开xlsx文件的方式      版本0.1.6
  13. 增加获取apk包的MD5值的方法， 用以完整性校验 版本0.1.9
  14. 增加强制退出app的功能（kill进程）          版本0.2
+ 15. 处理MD5值首位为0时自动消除0的BUG                     版本0.2.1
 ## Usage
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.2'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.2.1'
 	}
 
 ```
