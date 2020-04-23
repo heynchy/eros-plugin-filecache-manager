@@ -23,13 +23,24 @@
  13. 增加获取apk包的MD5值的方法， 用以完整性校验 版本0.1.9
  14. 增加强制退出app的功能（kill进程）          版本0.2
  15. 处理MD5值首位为0时自动消除0的BUG                     版本0.2.1
+ 16. 增加断点下载的功能downloadBreakPoint(),             版本0.2.4
 ## Usage
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.2.1'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.2.4'
 	}
 
+```
+### 添加混淆（如果需要断点下载功能）
+```groovy
+ # 断点下载的混淆
+-keepnames class com.liulishuo.okdownload.core.connection.DownloadOkHttp3Connection
+# ------- end com.liulishuo.okdownload:okhttp proguard rules ----
+-keep class com.liulishuo.okdownload.core.breakpoint.BreakpointStoreOnSQLite {
+        public com.liulishuo.okdownload.core.breakpoint.DownloadStore createRemitSelf();
+        public com.liulishuo.okdownload.core.breakpoint.BreakpointStoreOnSQLite(android.content.Context);
+}
 ```
 
 ### 文件操作Module
@@ -48,6 +59,20 @@
      */
     @JSMethod(uiThread = true)
     public void downloadFile(String params, final JSCallback success, final JSCallback failure, final JSCallback progress)    
+``` 
+    2.1.1 文件断点下载（参数，返参跟downloadFile一样，就是方法名称不一样而已）
+```java
+        
+   /**
+     * 下载文件的方法，带有进度的
+     *
+     * @param params   必须传递（Json 格式）,相关参数包含url, fileId, fileName，token(需要权限的传递该参数)
+     * @param success  下载成功的回调
+     * @param failure  下载失败的回调
+     * @param progress 下载进度的回调
+     */
+    @JSMethod(uiThread = true)
+    public void downloadBreakPoint(String params, final JSCallback success, final JSCallback failure, final JSCallback progress)    
 ``` 
     2.2 判断文件是否存在（是否已下载）
 ```java
