@@ -327,9 +327,9 @@ public class FileModule extends WXModule {
                         success.invoke("下载完成");
                     } else {
                         if (realCause != null){
-                            success.invoke("下载失败"+realCause.getMessage());
+                            failure.invoke("下载失败"+realCause.getMessage());
                         } else {
-                            success.invoke("下载失败");
+                            failure.invoke("下载失败");
                         }
                     }
                }
