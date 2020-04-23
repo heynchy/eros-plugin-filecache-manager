@@ -32,6 +32,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    provided 'com.github.bmfe:WeexErosFramework:1.0.4'
+    compileOnly 'com.github.bmfe:WeexErosFramework:1.0.4'
     implementation 'com.google.code.gson:gson:2.8.5'
+    // core
+    implementation 'com.liulishuo.okdownload:okdownload:1.0.3'
+    // provide sqlite to store breakpoints
+    implementation 'com.liulishuo.okdownload:sqlite:1.0.3'
 }

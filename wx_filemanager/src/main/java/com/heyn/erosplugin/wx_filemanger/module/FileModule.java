@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -19,11 +21,21 @@ import com.heyn.erosplugin.wx_filemanger.util.DownloadFileUtil;
 import com.heyn.erosplugin.wx_filemanger.util.FileUtil;
 import com.heyn.erosplugin.wx_filemanger.util.PermissionUtil;
 import com.heyn.erosplugin.wx_filemanger.util.ToastUtil;
+import com.liulishuo.okdownload.DownloadTask;
+import com.liulishuo.okdownload.SpeedCalculator;
+import com.liulishuo.okdownload.StatusUtil;
+import com.liulishuo.okdownload.core.breakpoint.BlockInfo;
+import com.liulishuo.okdownload.core.breakpoint.BreakpointInfo;
+import com.liulishuo.okdownload.core.cause.EndCause;
+import com.liulishuo.okdownload.core.listener.DownloadListener4WithSpeed;
+import com.liulishuo.okdownload.core.listener.assist.Listener4SpeedAssistExtend;
 import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;
 import com.taobao.weex.common.WXModule;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_FIVE;
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.ACTION_ONE;
@@ -97,7 +109,7 @@ public class FileModule extends WXModule {
         } else {
             // 如果没有有存储权限就去申请
             WxDownloadFileActivity.start(mWXSDKInstance.getContext(), params, success, failure,
-                    progress);
+                    progress, false);
         }
     }
 
@@ -233,6 +245,100 @@ public class FileModule extends WXModule {
                               final JSCallback progress) {
         final Activity activity = (Activity) mWXSDKInstance.getContext();
         WxUploadFileActivity.start(activity, params, success, failure, progress);
+    }
+
+    /**
+     * 下载文件的方法，带有进度的
+     *
+     * @param params   相关参数包含url, fileId, fileName
+     * @param success  下载成功的回调
+     * @param failure  下载失败的回调
+     * @param progress 下载进度的回调
+     */
+    @JSMethod(uiThread = true)
+    public void downloadBreakPoint(String params, final JSCallback success, final JSCallback failure,
+                             final JSCallback progress) {
+        final Activity activity = (Activity) mWXSDKInstance.getContext();
+        if (PermissionUtil.hasStoragePermission(activity)) {
+            // 如果有存储权限就进行下载
+            if (TextUtils.isEmpty(params)) {
+                failure.invoke("下载参数丢失，请重试！");
+                return;
+            }
+            ParamsEvent paramsEvent = new Gson().fromJson(params, ParamsEvent.class);
+            String fileId = paramsEvent.getFileId() == null ? "" : paramsEvent.getFileId();
+            String fileName = paramsEvent.getFileName();
+            String url = paramsEvent.getUrl();
+            String token = paramsEvent.getToken();
+            String saveDir = activity.getExternalCacheDir() + "/" + fileId;
+            DownloadTask.Builder builder = new DownloadTask.Builder(url, new File(saveDir));
+            if (!TextUtils.isEmpty(token)){
+                builder.addHeader("Authorization", token);
+            }
+            builder.setFilename(fileName)
+                    // the minimal interval millisecond for callback progress
+                    .setMinIntervalMillisCallbackProcess(30)
+                    // do re-download even if the task has already been completed in the past.
+                    .setPassIfAlreadyCompleted(false);
+           builder.build().enqueue(new DownloadListener4WithSpeed() {
+               @Override
+               public void taskStart(@NonNull DownloadTask task) {
+
+               }
+
+               @Override
+               public void connectStart(@NonNull DownloadTask task, int blockIndex, @NonNull Map<String, List<String>> requestHeaderFields) {
+
+               }
+
+               @Override
+               public void connectEnd(@NonNull DownloadTask task, int blockIndex, int responseCode, @NonNull Map<String, List<String>> responseHeaderFields) {
+
+               }
+
+               @Override
+               public void infoReady(@NonNull DownloadTask task, @NonNull BreakpointInfo info, boolean fromBreakpoint, @NonNull Listener4SpeedAssistExtend.Listener4SpeedModel model) {
+
+               }
+
+               @Override
+               public void progressBlock(@NonNull DownloadTask task, int blockIndex, long currentBlockOffset, @NonNull SpeedCalculator blockSpeed) {
+
+               }
+
+               @Override
+               public void progress(@NonNull DownloadTask task, long currentOffset, @NonNull SpeedCalculator taskSpeed) {
+                   double length = StatusUtil.getCurrentInfo(task).getTotalLength();
+                   Log.i("chy1234","progress==="+currentOffset/length *100);
+                   int percent = (int) (currentOffset/length *100);
+                   if (progress != null) {
+                       progress.invokeAndKeepAlive(percent);
+                   }
+               }
+
+               @Override
+               public void blockEnd(@NonNull DownloadTask task, int blockIndex, BlockInfo info, @NonNull SpeedCalculator blockSpeed) {
+
+               }
+
+               @Override
+               public void taskEnd(@NonNull DownloadTask task, @NonNull EndCause cause, @Nullable Exception realCause, @NonNull SpeedCalculator taskSpeed) {
+                    if (StatusUtil.isCompleted(task)){
+                        success.invoke("下载完成");
+                    } else {
+                        if (realCause != null){
+                            success.invoke("下载失败"+realCause.getMessage());
+                        } else {
+                            success.invoke("下载失败");
+                        }
+                    }
+               }
+           });
+        } else {
+            // 如果没有有存储权限就去申请
+            WxDownloadFileActivity.start(mWXSDKInstance.getContext(), params, success, failure,
+                    progress, true);
+        }
     }
 }
 
