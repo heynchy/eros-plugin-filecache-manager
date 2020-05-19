@@ -24,11 +24,12 @@
  14. 增加强制退出app的功能（kill进程）          版本0.2
  15. 处理MD5值首位为0时自动消除0的BUG                     版本0.2.1
  16. 增加断点下载的功能downloadBreakPoint(),             版本0.2.4
+ 17. 文件上传时添加打开指定文件夹的功能                   版本0.2.5
 ## Usage
 ###  Add dependency
 ```groovy
 	dependencies {
-	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.2.4'
+	        implementation 'com.github.heynchy:eros-plugin-filecache-manager:0.2.5'
 	}
 
 ```
@@ -114,6 +115,7 @@
 	    params:{
 	         // 其他参数的信息（可参考Eros图片上传时该处的取值格式进行设置）
 	    }，
+	    fileFolderPath:"test"  // 路径以手机根目录为基础，传参只传根目录下的文件夹路径。 例：/storage/emulated/0/test， 只传test即可
         }, success =>{
             // 上传成功的回调
         }, failure => {
