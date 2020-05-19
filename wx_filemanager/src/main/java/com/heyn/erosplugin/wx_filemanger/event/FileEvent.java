@@ -9,10 +9,11 @@ import java.io.Serializable;
  * Introduce:
  */
 public class FileEvent implements Serializable {
-    private String url;    // 上传接口
-    private  String params; // 上传附带参数 json
-    private String header; // 上传接口的头文件设置
-    private String type;   // 系统文件过滤类型
+    private String url;             // 上传接口
+    private  String params;         // 上传附带参数 json
+    private String header;          // 上传接口的头文件设置
+    private String type;            // 系统文件过滤类型
+    private String fileFolderPath;  // 指定打开目标文件夹的相对路径
 
     public String getUrl() {
         return url;
@@ -45,4 +46,13 @@ public class FileEvent implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
+
+    public String getFileFolderPath() {
+        return fileFolderPath;
+    }
+
+    public void setFileFolderPath(String fileFolderPath) {
+        this.fileFolderPath = fileFolderPath;
+    }
 }
+

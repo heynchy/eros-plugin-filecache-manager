@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import static com.heyn.erosplugin.wx_filemanger.util.Constant.DATA_PARAMAS;
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.FAILURE_CALLBACK;
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.PROGRESS_CALLBACK;
 import static com.heyn.erosplugin.wx_filemanger.util.Constant.SUCCESS_CALLBACK;
+import static com.heyn.erosplugin.wx_filemanger.util.FileUtil.getAndroidUri;
 import static com.heyn.erosplugin.wx_filemanger.util.PermissionUtil.REQUEST_EXTERNAL_STORAGE;
 
 
@@ -87,7 +89,14 @@ public class WxUploadFileActivity extends Activity implements IWXRenderListener 
      */
     private void checkPermission() {
         if (PermissionUtil.hasStoragePermission(this)) {
-            showFileChooser(mEvent.getType());  // 选择文件
+            if (TextUtils.isEmpty(mEvent.getFileFolderPath())){
+                showFileChooser(mEvent.getType());  // 选择文件
+            } else {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
+                        mEvent.getFileFolderPath() ;
+                openAssignFolder(filePath);
+            }
+
         } else {
             PermissionUtil.getStoragePermissions(this);// 主动申请权限
         }
@@ -112,6 +121,31 @@ public class WxUploadFileActivity extends Activity implements IWXRenderListener 
     }
 
     /**
+     * 上传资料时打开的文件选择器
+     */
+    private void openAssignFolder(String path) {
+        String type = mEvent.getType();
+        if (TextUtils.isEmpty(type)) {
+            type = "*/*";
+        }
+        File file = new File(path);
+        if(null==file || !file.exists()){
+            ToastUtil.getInstance().showToast("没有找到对应的文件夹, 请重试！");
+            finish();
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(getAndroidUri(path), type);
+        try {
+            startActivityForResult(intent, 1111);
+        } catch (ActivityNotFoundException ex) {
+            ToastUtil.getInstance().showToast("没有找到文件管理器");
+        }
+    }
+
+    /**
      * 根据权限的返回值进行相关处理
      *
      * @param requestCode
@@ -125,7 +159,13 @@ public class WxUploadFileActivity extends Activity implements IWXRenderListener 
         if (REQUEST_EXTERNAL_STORAGE == requestCode) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // 获取存储权限成功
-                showFileChooser(mEvent.getType());  // 下载文件
+                if (TextUtils.isEmpty(mEvent.getFileFolderPath())){
+                    showFileChooser(mEvent.getType());  // 选择文件
+                } else {
+                    String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
+                            mEvent.getFileFolderPath() ;
+                    openAssignFolder(filePath);
+                }
             }
         }
         finish();
