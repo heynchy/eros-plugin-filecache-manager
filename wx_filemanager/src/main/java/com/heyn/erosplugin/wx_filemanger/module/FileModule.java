@@ -323,7 +323,7 @@ public class FileModule extends WXModule {
 
                @Override
                public void taskEnd(@NonNull DownloadTask task, @NonNull EndCause cause, @Nullable Exception realCause, @NonNull SpeedCalculator taskSpeed) {
-                    if (StatusUtil.isCompleted(task)){
+                    if (StatusUtil.isCompleted(task) || TextUtils.equals(cause.name(),"COMPLETED")){
                         success.invoke("下载完成");
                     } else {
                         if (realCause != null){
